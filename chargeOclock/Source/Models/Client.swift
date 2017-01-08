@@ -12,7 +12,7 @@ protocol ClientSettable {
 	var client: Client? { get set }
 }
 
-struct Client {
+class Client {
 
 	var id: Int = 0
 	var name: String = ""
