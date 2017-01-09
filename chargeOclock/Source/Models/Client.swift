@@ -23,7 +23,7 @@ class Client {
 	}
 
 	init(from json: [String: Any]) {
-		self.id = Int(json["id"] as? String ?? "") ?? 0
+		self.id = json["id"] as? Int ?? 0
 		self.name = json["name"] as? String ?? ""
 	}
 
@@ -42,7 +42,7 @@ extension Client {
 						return
 					}
 					completion(clientsArray.filter {
-						return Int($0["id"] as? String ?? "") != nil && $0["name"] as? String != nil
+						return $0["id"] as? Int != nil && $0["name"] as? String != nil
 						}.map { Client(from: $0) }, nil)
 				} catch {
 					completion([], oClockErrors.invalidData)
