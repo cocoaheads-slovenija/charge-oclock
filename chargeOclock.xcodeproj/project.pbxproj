@@ -282,7 +282,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 0820;
 				LastUpgradeCheck = 0820;
-				ORGANIZATIONNAME = goranche.net;
+				ORGANIZATIONNAME = "CocoaHeads Slovenia";
 				TargetAttributes = {
 					51F214301E2280D50036E943 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -607,6 +607,7 @@
 				51F2145B1E2280D50036E943 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		51F2145C1E2280D50036E943 /* Build configuration list for PBXNativeTarget "chargeOclockTests" */ = {
 			isa = XCConfigurationList;
@@ -615,6 +616,7 @@
 				51F2145E1E2280D50036E943 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		51F2145F1E2280D50036E943 /* Build configuration list for PBXNativeTarget "chargeOclockUITests" */ = {
 			isa = XCConfigurationList;
@@ -623,6 +625,7 @@
 				51F214611E2280D50036E943 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
