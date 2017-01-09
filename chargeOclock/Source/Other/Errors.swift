@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum oClockErrors: Error {
+enum oClockError: Error {
 	case unknown
 	case internalError
 	case serverError(code: Int)

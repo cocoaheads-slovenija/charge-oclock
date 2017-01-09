@@ -38,14 +38,14 @@ extension Client {
 			} else if let data = data {
 				do {
 					guard let clientsArray = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [[String: Any]] else {
-						completion([], oClockErrors.invalidData)
+						completion([], oClockError.invalidData)
 						return
 					}
 					completion(clientsArray.filter {
 						return $0["id"] as? Int != nil && $0["name"] as? String != nil
 						}.map { Client(from: $0) }, nil)
 				} catch {
-					completion([], oClockErrors.invalidData)
+					completion([], oClockError.invalidData)
 				}
 			}
 		}

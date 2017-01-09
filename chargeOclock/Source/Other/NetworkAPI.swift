@@ -48,7 +48,7 @@ class NetworkAPI {
 				return
 			}
 			guard let data = data else {
-				completion(nil, oClockErrors.serverError(code: response.statusCode))
+				completion(nil, oClockError.serverError(code: response.statusCode))
 				return
 			}
 			completion(data, nil)
@@ -57,7 +57,7 @@ class NetworkAPI {
 
 	private func constructURL(for uri: String, completion: NetworkCompletion) -> URL? {
 		guard let url = URL(string: uri, relativeTo: baseURL) else {
-			completion(nil, oClockErrors.internalError)
+			completion(nil, oClockError.internalError)
 			return nil
 		}
 		return url
@@ -73,7 +73,7 @@ class NetworkAPI {
 
 	private func checkResponseCode(_ statusCode: Int, completion: NetworkCompletion) -> Bool {
 		guard statusCode >= 200, statusCode < 300 else {
-			var error = oClockErrors.unknown
+			var error = oClockError.unknown
 			switch statusCode {
 			case 401:
 				error = .unauthorized
