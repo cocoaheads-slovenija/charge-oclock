@@ -8,6 +8,23 @@
 
 import UIKit
 
+#if PRODUCTION
+	let environmentString = "production"
+#elseif Staging
+	let environmentString = "staging"
+#elseif Release
+	let environmentString = "production"
+#else
+	let environmentString = "development"
+#endif
+
 class ViewController: UIViewController {
 
+	@IBOutlet var environmentLabel: UILabel!
+
+	override func viewDidLoad() {
+		super.viewDidLoad()
+
+		environmentLabel.text = environmentString;
+	}
 }
