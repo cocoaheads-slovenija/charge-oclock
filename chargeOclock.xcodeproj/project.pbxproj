@@ -97,6 +97,7 @@
 				51F214321E2280D50036E943 /* Products */,
 			);
 			sourceTree = "<group>";
+			usesTabs = 1;
 		};
 		51F214321E2280D50036E943 /* Products */ = {
 			isa = PBXGroup;
