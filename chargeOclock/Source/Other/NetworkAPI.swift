@@ -25,7 +25,7 @@ class NetworkAPI {
 	static let shared = NetworkAPI()
 
 	// Mind the trailing slash, as this is used as a baseURL
-	// yes, explicit unwinding, if we fail here, it might as well be the end of the world!
+	// yes, explicit unwrapping, if we fail here, it might as well be the end of the world!
 	let baseURL = URL(string: "https://clocker.goranche.net/")!
 
 	// For development, you might want to use your local server
