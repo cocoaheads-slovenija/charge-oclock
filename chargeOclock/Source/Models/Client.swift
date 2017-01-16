@@ -51,4 +51,9 @@ extension Client {
 		}
 	}
 
+	func remove(completion: @escaping (Error?) -> Void) {
+		NetworkAPI.shared.removeClient(with: id) { data, error in
+			completion(error)
+		}
+	}
 }

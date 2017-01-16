@@ -16,6 +16,9 @@ extension NetworkAPI {
 		performGetRequest(to: "clients", completion: completion)
 	}
 
+	func removeClient(with id: Int, completion: @escaping NetworkCompletion) {
+		performDeleteRequest(to: "clients/\(id)", completion: completion)
+	}
 }
 
 class NetworkAPI {
@@ -53,6 +56,29 @@ class NetworkAPI {
 			}
 			completion(data, nil)
 			}.resume()
+	}
+
+	fileprivate func performDeleteRequest(to uri: String, completion: @escaping NetworkCompletion) {
+		guard let url = constructURL(for: uri, completion: completion) else {
+			return
+		}
+		var urlRequest = URLRequest(url: url)
+		urlRequest.httpMethod = "DELETE"
+
+		URLSession.shared.dataTask(with: urlRequest) { data, response, error in
+			guard !self.isError(error, completion: completion) else {
+				return
+			}
+			guard let response = response as? HTTPURLResponse, self.checkResponseCode(response.statusCode, completion: completion) else {
+				return
+			}
+			guard let data = data else {
+				completion(nil, oClockError.serverError(code: response.statusCode))
+				return
+			}
+			completion(data, nil)
+
+		}.resume()
 	}
 
 	private func constructURL(for uri: String, completion: NetworkCompletion) -> URL? {
