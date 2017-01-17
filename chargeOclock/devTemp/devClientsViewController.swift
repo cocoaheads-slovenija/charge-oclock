@@ -11,12 +11,14 @@ import UIKit
 class devClientsViewController: UITableViewController {
 
 	private var dataSource = ClientsDataSource()
+	private var tableViewDelegate = ClientsTableViewDelegate()
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
 		tableView.dataSource = dataSource
-
+		tableView.delegate = tableViewDelegate
+		tableViewDelegate.deleteTapped = deleteTapped
 		tableView.refreshControl = UIRefreshControl()
 		tableView.refreshControl?.addTarget(self, action: #selector(refresh(refreshControl:)), for: .valueChanged)
 	}
@@ -44,6 +46,20 @@ class devClientsViewController: UITableViewController {
 			}
 
 			refreshControl.endRefreshing()
+		}
+	}
+
+	func deleteTapped(indexPath: IndexPath) {
+		dataSource.clients[indexPath.row].delete { error in
+
+			if let error = error {
+				print("💥 \(error)")
+			}
+
+			self.dataSource.clients.remove(at: indexPath.row)
+			DispatchQueue.main.async {
+				self.tableView.reloadData()
+			}
 		}
 	}
 

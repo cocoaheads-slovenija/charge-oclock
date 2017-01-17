@@ -10,7 +10,7 @@ import UIKit
 
 class ClientsDataSource: NSObject, UITableViewDataSource {
 
-	let clients: [Client]
+	var clients: [Client]
 	let reuseIdentifier: String
 
 	init(with clients: [Client] = [], reuseIdentifier: String = "devClientCell") {
