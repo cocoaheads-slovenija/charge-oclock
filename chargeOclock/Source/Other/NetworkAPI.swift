@@ -104,5 +104,5 @@ class NetworkAPI {
 		}
 		return true
 	}
-	
+
 }
