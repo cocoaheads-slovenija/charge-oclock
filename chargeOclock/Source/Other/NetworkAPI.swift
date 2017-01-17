@@ -16,8 +16,8 @@ extension NetworkAPI {
 		performGetRequest(to: "clients", completion: completion)
 	}
 
-	func removeClient(with id: Int, completion: @escaping NetworkCompletion) {
-		performDeleteRequest(to: "clients/\(id)", completion: completion)
+	func delete(client: Client, completion: @escaping NetworkCompletion) {
+		performDeleteRequest(to: "clients/\(client.id)", completion: completion)
 	}
 }
 
@@ -32,7 +32,7 @@ class NetworkAPI {
 	let baseURL = URL(string: "https://clocker.goranche.net/")!
 
 	// For development, you might want to use your local server
-//	let baseURL = URL(string: "http://localhost:8080/")!
+	//	let baseURL = URL(string: "http://localhost:8080/")!
 
 	// MARK: - Helper functions
 
@@ -43,28 +43,23 @@ class NetworkAPI {
 		guard let url = constructURL(for: uri, completion: completion) else {
 			return
 		}
-		URLSession.shared.dataTask(with: url) { data, response, error in
-			guard !self.isError(error, completion: completion) else {
-				return
-			}
-			guard let response = response as? HTTPURLResponse, self.checkResponseCode(response.statusCode, completion: completion) else {
-				return
-			}
-			guard let data = data else {
-				completion(nil, oClockError.serverError(code: response.statusCode))
-				return
-			}
-			completion(data, nil)
-			}.resume()
+
+		var urlRequest = URLRequest(url: url)
+		urlRequest.httpMethod = "GET"
+		performRequest(with: urlRequest, completion: completion)
 	}
 
 	fileprivate func performDeleteRequest(to uri: String, completion: @escaping NetworkCompletion) {
 		guard let url = constructURL(for: uri, completion: completion) else {
 			return
 		}
+
 		var urlRequest = URLRequest(url: url)
 		urlRequest.httpMethod = "DELETE"
+		performRequest(with: urlRequest, completion: completion)
+	}
 
+	private func performRequest(with urlRequest: URLRequest, completion: @escaping NetworkCompletion) {
 		URLSession.shared.dataTask(with: urlRequest) { data, response, error in
 			guard !self.isError(error, completion: completion) else {
 				return
@@ -77,7 +72,6 @@ class NetworkAPI {
 				return
 			}
 			completion(data, nil)
-
 		}.resume()
 	}
 
@@ -115,5 +109,5 @@ class NetworkAPI {
 		}
 		return true
 	}
-
+	
 }
