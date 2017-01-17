@@ -40,26 +40,21 @@ class NetworkAPI {
 	}
 
 	fileprivate func performGetRequest(to uri: String, completion: @escaping NetworkCompletion) {
-		guard let url = constructURL(for: uri, completion: completion) else {
-			return
-		}
-
-		var urlRequest = URLRequest(url: url)
-		urlRequest.httpMethod = "GET"
-		performRequest(with: urlRequest, completion: completion)
+		performRequest(to: uri, method: "GET", completion: completion)
 	}
 
 	fileprivate func performDeleteRequest(to uri: String, completion: @escaping NetworkCompletion) {
+		performRequest(to: uri, method: "DELETE", completion: completion)
+	}
+
+	private func performRequest(to uri: String, method httpMethod: String, completion: @escaping NetworkCompletion) {
 		guard let url = constructURL(for: uri, completion: completion) else {
 			return
 		}
 
 		var urlRequest = URLRequest(url: url)
-		urlRequest.httpMethod = "DELETE"
-		performRequest(with: urlRequest, completion: completion)
-	}
+		urlRequest.httpMethod = httpMethod
 
-	private func performRequest(with urlRequest: URLRequest, completion: @escaping NetworkCompletion) {
 		URLSession.shared.dataTask(with: urlRequest) { data, response, error in
 			guard !self.isError(error, completion: completion) else {
 				return
