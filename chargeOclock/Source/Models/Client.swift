@@ -27,6 +27,11 @@ class Client {
 		self.name = json["name"] as? String ?? ""
 	}
 
+	func delete(completion: @escaping (Error?) -> Void) {
+		NetworkAPI.shared.delete(client: self) { data, error in
+			completion(error)
+		}
+	}
 }
 
 extension Client {
@@ -50,5 +55,4 @@ extension Client {
 			}
 		}
 	}
-
 }

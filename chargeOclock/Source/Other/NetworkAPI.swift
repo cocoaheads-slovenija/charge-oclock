@@ -16,6 +16,9 @@ extension NetworkAPI {
 		performGetRequest(to: "clients", completion: completion)
 	}
 
+	func delete(client: Client, completion: @escaping NetworkCompletion) {
+		performDeleteRequest(to: "clients/\(client.id)", completion: completion)
+	}
 }
 
 class NetworkAPI {
@@ -29,7 +32,7 @@ class NetworkAPI {
 	let baseURL = URL(string: "https://clocker.goranche.net/")!
 
 	// For development, you might want to use your local server
-//	let baseURL = URL(string: "http://localhost:8080/")!
+	//	let baseURL = URL(string: "http://localhost:8080/")!
 
 	// MARK: - Helper functions
 
@@ -37,10 +40,22 @@ class NetworkAPI {
 	}
 
 	fileprivate func performGetRequest(to uri: String, completion: @escaping NetworkCompletion) {
+		performRequest(to: uri, method: "GET", completion: completion)
+	}
+
+	fileprivate func performDeleteRequest(to uri: String, completion: @escaping NetworkCompletion) {
+		performRequest(to: uri, method: "DELETE", completion: completion)
+	}
+
+	private func performRequest(to uri: String, method httpMethod: String, completion: @escaping NetworkCompletion) {
 		guard let url = constructURL(for: uri, completion: completion) else {
 			return
 		}
-		URLSession.shared.dataTask(with: url) { data, response, error in
+
+		var urlRequest = URLRequest(url: url)
+		urlRequest.httpMethod = httpMethod
+
+		URLSession.shared.dataTask(with: urlRequest) { data, response, error in
 			guard !self.isError(error, completion: completion) else {
 				return
 			}
@@ -52,7 +67,7 @@ class NetworkAPI {
 				return
 			}
 			completion(data, nil)
-			}.resume()
+		}.resume()
 	}
 
 	private func constructURL(for uri: String, completion: NetworkCompletion) -> URL? {
