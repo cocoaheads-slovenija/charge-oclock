@@ -10,11 +10,11 @@ import UIKit
 
 class ClientsTableViewDelegate: NSObject, UITableViewDelegate {
 
-	var deleteTapped: ((IndexPath) -> Void)?
+	var deleteClient: ((IndexPath) -> Void)?
 
 	func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
 		return [UITableViewRowAction(style: .destructive, title: "Delete") { action, index in
-			self.deleteTapped?(indexPath)
-			 }]
+			self.deleteClient?(indexPath)
+		}]
 	}
 }

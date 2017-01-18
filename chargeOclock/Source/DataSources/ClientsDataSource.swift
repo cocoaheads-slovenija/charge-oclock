@@ -10,7 +10,7 @@ import UIKit
 
 class ClientsDataSource: NSObject, UITableViewDataSource {
 
-	var clients: [Client]
+	private(set) var clients: [Client]
 	let reuseIdentifier: String
 
 	init(with clients: [Client] = [], reuseIdentifier: String = "devClientCell") {
@@ -32,6 +32,10 @@ class ClientsDataSource: NSObject, UITableViewDataSource {
 			clientCell.client = clients[indexPath.row]
 		}
 		return cell
+	}
+
+	func removeClient(at index: Int) {
+		clients.remove(at: index)
 	}
 
 }
