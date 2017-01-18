@@ -61,7 +61,7 @@ class devClientsViewController: UITableViewController {
 
 		alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil ))
 
-		alert.addAction(UIAlertAction(title: "Create", style: .default, handler: { [weak alert] (_) in
+		alert.addAction(UIAlertAction(title: "Create", style: .default) { [weak alert] (_) in
 
 			guard let name = alert?.textFields?.first?.text else {
 				return
@@ -74,8 +74,7 @@ class devClientsViewController: UITableViewController {
 					print("\(data)")
 				}
 			}
-
-		} ))
+		})
 
 		self.present(alert, animated: true, completion: nil)
 	}
