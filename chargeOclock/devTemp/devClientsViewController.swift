@@ -71,7 +71,7 @@ class devClientsViewController: UITableViewController {
 				if error != nil {
 					print("Error")
 				} else if data != nil {
-					print("\(data)")
+					self.refresh(refreshControl: self.tableView.refreshControl ?? UIRefreshControl() )
 				}
 			}
 		})
