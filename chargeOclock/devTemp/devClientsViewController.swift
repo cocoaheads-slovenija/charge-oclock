@@ -19,6 +19,10 @@ class devClientsViewController: UITableViewController {
 
 		tableView.refreshControl = UIRefreshControl()
 		tableView.refreshControl?.addTarget(self, action: #selector(refresh(refreshControl:)), for: .valueChanged)
+
+		let plusButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(plusTapped))
+		navigationItem.setRightBarButton(plusButton, animated: true)
+
 	}
 
 	override func viewWillAppear(_ animated: Bool) {
@@ -44,6 +48,16 @@ class devClientsViewController: UITableViewController {
 			}
 
 			refreshControl.endRefreshing()
+		}
+	}
+
+	func plusTapped() {
+		Client.addClient(name: "Test name") { error, data in
+			if error != nil {
+				print("Error")
+			} else if data != nil {
+				print("\(data)")
+			}
 		}
 	}
 

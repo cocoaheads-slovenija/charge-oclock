@@ -32,6 +32,12 @@ class Client {
 			completion(error)
 		}
 	}
+
+	static func addClient(name: String, completion: @escaping (Error?, Data?) -> Void) {
+		NetworkAPI.shared.addClient(name: name) { data, error in
+			completion(error, data)
+		}
+	}
 }
 
 extension Client {
