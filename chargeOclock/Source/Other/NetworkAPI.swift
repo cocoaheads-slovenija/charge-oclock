@@ -19,6 +19,12 @@ extension NetworkAPI {
 	func delete(client: Client, completion: @escaping NetworkCompletion) {
 		performDeleteRequest(to: "clients/\(client.id)", completion: completion)
 	}
+
+	func addClient(name: String, completion: @escaping NetworkCompletion) {
+		let header = ["Content-Type" : "application/json; charset=utf-8"]
+		let body = ["name" : name]
+		performPostRequest(to: "clients", header: header, body: body, completion: completion)
+	}
 }
 
 class NetworkAPI {
@@ -39,6 +45,10 @@ class NetworkAPI {
 	private init() {
 	}
 
+	fileprivate func performPostRequest(to uri: String, header: [String : String]? = nil, body : [String : String]? = nil, completion: @escaping NetworkCompletion) {
+		performRequest(to: uri, method: "POST", header: header, body: body, completion: completion)
+	}
+
 	fileprivate func performGetRequest(to uri: String, completion: @escaping NetworkCompletion) {
 		performRequest(to: uri, method: "GET", completion: completion)
 	}
@@ -47,13 +57,23 @@ class NetworkAPI {
 		performRequest(to: uri, method: "DELETE", completion: completion)
 	}
 
-	private func performRequest(to uri: String, method httpMethod: String, completion: @escaping NetworkCompletion) {
+	private func performRequest(to uri: String, method httpMethod: String, header: [String : String]? = nil, body : [String : String]? = nil, completion: @escaping NetworkCompletion) {
 		guard let url = constructURL(for: uri, completion: completion) else {
 			return
 		}
 
 		var urlRequest = URLRequest(url: url)
 		urlRequest.httpMethod = httpMethod
+
+		if let header = header {
+			for (key, value) in header {
+				urlRequest.addValue(value, forHTTPHeaderField: key)
+			}
+		}
+
+		if let body = body, let serializedBody = try? JSONSerialization.data(withJSONObject: body, options: []) {
+			urlRequest.httpBody = serializedBody
+		}
 
 		URLSession.shared.dataTask(with: urlRequest) { data, response, error in
 			guard !self.isError(error, completion: completion) else {
