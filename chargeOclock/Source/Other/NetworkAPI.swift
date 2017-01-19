@@ -20,11 +20,14 @@ extension NetworkAPI {
 		performDeleteRequest(to: "clients/\(client.id)", completion: completion)
 	}
 
-	func addClient(name: String, completion: @escaping NetworkCompletion) {
-		let header = ["Content-Type" : "application/json; charset=utf-8"]
-		let body = ["name" : name]
-		performPostRequest(to: "clients", header: header, body: body, completion: completion)
+	func create(client: Client, completion: @escaping NetworkCompletion) {
+		performPostRequest(to: "clients", json: client.toJSON(), completion: completion)
 	}
+
+	func update(client: Client, completion: @escaping NetworkCompletion) {
+		performPatchRequest(to: "clients/\(client.id)", json: client.toJSON(), completion: completion)
+	}
+
 }
 
 class NetworkAPI {
@@ -45,8 +48,14 @@ class NetworkAPI {
 	private init() {
 	}
 
-	fileprivate func performPostRequest(to uri: String, header: [String : String]? = nil, body : [String : String]? = nil, completion: @escaping NetworkCompletion) {
-		performRequest(to: uri, method: "POST", header: header, body: body, completion: completion)
+	fileprivate func performPostRequest(to uri: String, json: Data? = nil, completion: @escaping NetworkCompletion) {
+		let headers = ["Content-Type" : "application/json; charset=utf-8"]
+		performRequest(to: uri, method: "POST", headers: headers, json: json, completion: completion)
+	}
+
+	fileprivate func performPatchRequest(to uri: String, json: Data? = nil, completion: @escaping NetworkCompletion) {
+		let headers = ["Content-Type" : "application/json; charset=utf-8"]
+		performRequest(to: uri, method: "PATCH", headers: headers, json: json, completion: completion)
 	}
 
 	fileprivate func performGetRequest(to uri: String, completion: @escaping NetworkCompletion) {
@@ -57,22 +66,19 @@ class NetworkAPI {
 		performRequest(to: uri, method: "DELETE", completion: completion)
 	}
 
-	private func performRequest(to uri: String, method httpMethod: String, header: [String : String]? = nil, body : [String : String]? = nil, completion: @escaping NetworkCompletion) {
+	private func performRequest(to uri: String, method httpMethod: String, headers: [String : String]? = nil, json: Data? = nil, completion: @escaping NetworkCompletion) {
 		guard let url = constructURL(for: uri, completion: completion) else {
 			return
 		}
 
 		var urlRequest = URLRequest(url: url)
 		urlRequest.httpMethod = httpMethod
+		urlRequest.httpBody = json
 
-		if let header = header {
+		if let header = headers {
 			for (key, value) in header {
 				urlRequest.addValue(value, forHTTPHeaderField: key)
 			}
-		}
-
-		if let body = body, let serializedBody = try? JSONSerialization.data(withJSONObject: body, options: []) {
-			urlRequest.httpBody = serializedBody
 		}
 
 		URLSession.shared.dataTask(with: urlRequest) { data, response, error in

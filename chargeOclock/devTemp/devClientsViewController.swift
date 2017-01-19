@@ -52,30 +52,26 @@ class devClientsViewController: UITableViewController {
 	}
 
 	func plusTapped() {
-
-		let alert = UIAlertController(title: "Add Client 👔", message: "Please, enter client name 😉", preferredStyle: .alert)
-
+		let alert = UIAlertController(title: "Add Client", message: "Please, enter client name", preferredStyle: .alert)
 		alert.addTextField { textField in
 			textField.placeholder = "Client name"
 		}
-
 		alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil ))
 
-		alert.addAction(UIAlertAction(title: "Create", style: .default) { [weak alert] (_) in
-
-			guard let name = alert?.textFields?.first?.text else {
+		let createAction = UIAlertAction(title: "Create", style: .default) { (_) in
+			guard let name = alert.textFields?.first?.text else {
 				return
 			}
-
-			Client.addClient(name: name) { error, data in
-				if error != nil {
-					print("Error")
-				} else if data != nil {
-					self.refresh(refreshControl: self.tableView.refreshControl ?? UIRefreshControl() )
+			let client = Client(name: name)
+			client.save() { error, data in
+				guard error == nil else {
+					print("\(error?.localizedDescription)")
+					return
 				}
+				self.refresh(refreshControl: self.tableView.refreshControl ?? UIRefreshControl() )
 			}
-		})
-
+		}
+		alert.addAction(createAction)
 		self.present(alert, animated: true, completion: nil)
 	}
 

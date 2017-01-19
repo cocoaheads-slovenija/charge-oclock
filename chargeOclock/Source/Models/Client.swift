@@ -15,10 +15,15 @@ protocol ClientSettable {
 class Client {
 
 	var id: Int = 0
-	var name: String = ""
+	var isDirty: Bool = false
 
-	init(id: Int, name: String) {
-		self.id = id
+	var name: String = "" {
+		didSet {
+			isDirty = true
+		}
+	}
+
+	init(name: String) {
 		self.name = name
 	}
 
@@ -27,14 +32,27 @@ class Client {
 		self.name = json["name"] as? String ?? ""
 	}
 
+	func toJSON() -> Data? {
+		do {
+			return try JSONSerialization.data(withJSONObject: ["name": name], options: [])
+		} catch {
+			print("JSONSerialization failed.")
+			return nil
+		}
+	}
+
 	func delete(completion: @escaping (Error?) -> Void) {
 		NetworkAPI.shared.delete(client: self) { data, error in
 			completion(error)
 		}
 	}
 
-	static func addClient(name: String, completion: @escaping (Error?, Data?) -> Void) {
-		NetworkAPI.shared.addClient(name: name) { data, error in
+	func save(completion: @escaping (Error?, Data?) -> Void) {
+		guard !isDirty else {
+			completion(oClockError.invalidData, nil)
+			return
+		}
+		NetworkAPI.shared.create(client: self) { (data, error) in
 			completion(error, data)
 		}
 	}
