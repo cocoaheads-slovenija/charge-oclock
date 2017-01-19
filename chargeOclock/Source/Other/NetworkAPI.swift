@@ -49,13 +49,11 @@ class NetworkAPI {
 	}
 
 	fileprivate func performPostRequest(to uri: String, json: Data? = nil, completion: @escaping NetworkCompletion) {
-		let headers = ["Content-Type" : "application/json; charset=utf-8"]
-		performRequest(to: uri, method: "POST", headers: headers, json: json, completion: completion)
+		performRequest(to: uri, method: "POST", headers: ["Content-Type" : "application/json; charset=utf-8"], json: json, completion: completion)
 	}
 
 	fileprivate func performPatchRequest(to uri: String, json: Data? = nil, completion: @escaping NetworkCompletion) {
-		let headers = ["Content-Type" : "application/json; charset=utf-8"]
-		performRequest(to: uri, method: "PATCH", headers: headers, json: json, completion: completion)
+		performRequest(to: uri, method: "PATCH", headers: ["Content-Type" : "application/json; charset=utf-8"], json: json, completion: completion)
 	}
 
 	fileprivate func performGetRequest(to uri: String, completion: @escaping NetworkCompletion) {

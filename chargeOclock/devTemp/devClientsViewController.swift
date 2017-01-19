@@ -54,21 +54,22 @@ class devClientsViewController: UITableViewController {
 			textField.placeholder = "Client name"
 		}
 		alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil ))
-
-		let createAction = UIAlertAction(title: "Create", style: .default) { (_) in
-			guard let name = alert.textFields?.first?.text else {
+		alert.addAction(UIAlertAction(title: "Create", style: .default) { _ in
+			guard let name = alert.textFields?.first?.text, !name.isEmpty else {
+				let nameEmptyAlert = UIAlertController(title: "Ups", message: "Looks like you forgot to enter the username. Please, try again.", preferredStyle: .alert)
+				nameEmptyAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+				self.present(nameEmptyAlert, animated: true, completion: nil)
 				return
 			}
 			let client = Client(name: name)
-			client.save() { error, data in
+			client.save() { error in
 				guard error == nil else {
 					print("\(error?.localizedDescription)")
 					return
 				}
 				self.refresh(refreshControl: self.tableView.refreshControl ?? UIRefreshControl() )
 			}
-		}
-		alert.addAction(createAction)
+		})
 		self.present(alert, animated: true, completion: nil)
 	}
 

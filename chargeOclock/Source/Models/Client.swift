@@ -14,8 +14,8 @@ protocol ClientSettable {
 
 class Client {
 
-	var id: Int = 0
-	var isDirty: Bool = false
+	var id: Int? = nil
+	var isDirty: Bool!
 
 	var name: String = "" {
 		didSet {
@@ -25,18 +25,24 @@ class Client {
 
 	init(name: String) {
 		self.name = name
+		self.isDirty = true
 	}
 
 	init(from json: [String: Any]) {
-		self.id = json["id"] as? Int ?? 0
+		self.id = json["id"] as? Int
 		self.name = json["name"] as? String ?? ""
+		self.isDirty = false
 	}
 
 	func toJSON() -> Data? {
+		var data: [String: Any] = ["name": name]
+		if let id = id {
+			data["id"] = id
+		}
 		do {
-			return try JSONSerialization.data(withJSONObject: ["name": name], options: [])
+			return try JSONSerialization.data(withJSONObject: data, options: [])
 		} catch {
-			print("JSONSerialization failed.")
+			print("JSONSerialization error: \(error.localizedDescription)")
 			return nil
 		}
 	}
@@ -47,13 +53,42 @@ class Client {
 		}
 	}
 
-	func save(completion: @escaping (Error?, Data?) -> Void) {
-		guard !isDirty else {
-			completion(oClockError.invalidData, nil)
+	func save(completion: @escaping (Error?) -> Void) {
+		guard isDirty == true else {
+			completion(oClockError.internalError)
 			return
 		}
-		NetworkAPI.shared.create(client: self) { (data, error) in
-			completion(error, data)
+		if id == nil {
+			NetworkAPI.shared.create(client: self) { data, error in
+				guard error == nil else {
+					completion(error)
+					return
+				}
+				guard let data = data else {
+					completion(oClockError.invalidData)
+					return
+				}
+				do {
+					guard let client = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any] else {
+						completion(oClockError.invalidData)
+						return
+					}
+					self.id = client["id"] as? Int
+					self.isDirty = false
+					completion(nil)
+				} catch let error {
+					completion(error)
+				}
+			}
+		} else {
+			NetworkAPI.shared.update(client: self) { data, error in
+				guard error == nil else {
+					completion(error)
+					return
+				}
+				self.isDirty = false
+				completion(nil)
+			}
 		}
 	}
 }
