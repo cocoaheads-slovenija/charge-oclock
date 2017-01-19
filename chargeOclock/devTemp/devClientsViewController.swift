@@ -20,9 +20,6 @@ class devClientsViewController: UITableViewController {
 		tableView.refreshControl = UIRefreshControl()
 		tableView.refreshControl?.addTarget(self, action: #selector(refresh(refreshControl:)), for: .valueChanged)
 
-		let plusButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(plusTapped))
-		navigationItem.setRightBarButton(plusButton, animated: true)
-
 	}
 
 	override func viewWillAppear(_ animated: Bool) {
@@ -51,7 +48,7 @@ class devClientsViewController: UITableViewController {
 		}
 	}
 
-	func plusTapped() {
+	@IBAction func plusTapped(sender: AnyObject) {
 		let alert = UIAlertController(title: "Add Client", message: "Please, enter client name", preferredStyle: .alert)
 		alert.addTextField { textField in
 			textField.placeholder = "Client name"
