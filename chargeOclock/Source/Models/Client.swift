@@ -15,7 +15,7 @@ protocol ClientSettable {
 class Client {
 
 	var id: Int? = nil
-	var isDirty: Bool!
+	var isDirty: Bool
 
 	var name: String = "" {
 		didSet {
@@ -34,13 +34,13 @@ class Client {
 		self.isDirty = false
 	}
 
-	func toJSON() -> Data? {
-		var data: [String: Any] = ["name": name]
+	func toData() -> Data? {
+		var json: [String: Any] = ["name": name]
 		if let id = id {
-			data["id"] = id
+			json["id"] = id
 		}
 		do {
-			return try JSONSerialization.data(withJSONObject: data, options: [])
+			return try JSONSerialization.data(withJSONObject: json, options: [])
 		} catch {
 			print("JSONSerialization error: \(error.localizedDescription)")
 			return nil
@@ -54,8 +54,7 @@ class Client {
 	}
 
 	func save(completion: @escaping (Error?) -> Void) {
-		guard isDirty == true else {
-			completion(oClockError.internalError)
+		guard isDirty else {
 			return
 		}
 		if id == nil {
