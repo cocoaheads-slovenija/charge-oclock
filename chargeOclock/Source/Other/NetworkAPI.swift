@@ -21,13 +21,22 @@ extension NetworkAPI {
 	}
 
 	func create(client: Client, completion: @escaping NetworkCompletion) {
-		performPostRequest(to: "clients", data: client.toData(), completion: completion)
+		do {
+			let data = try JSONSerialization.data(withJSONObject: client.toJSON(), options: [])
+			performPostRequest(to: "clients", data: data, completion: completion)
+		} catch {
+			print("JSONSerialization error: \(error.localizedDescription)")
+		}
 	}
 
 	func update(client: Client, completion: @escaping NetworkCompletion) {
-		performPatchRequest(to: "clients/\(client.id)", data: client.toData(), completion: completion)
+		do {
+			let data = try JSONSerialization.data(withJSONObject: client.toJSON(), options: [])
+			performPatchRequest(to: "clients/\(client.id)", data: data, completion: completion)
+		} catch {
+			print("JSONSerialization error: \(error.localizedDescription)")
+		}
 	}
-
 }
 
 class NetworkAPI {
@@ -48,11 +57,11 @@ class NetworkAPI {
 	private init() {
 	}
 
-	fileprivate func performPostRequest(to uri: String, data: Data? = nil, completion: @escaping NetworkCompletion) {
+	fileprivate func performPostRequest(to uri: String, data: Data, completion: @escaping NetworkCompletion) {
 		performRequest(to: uri, method: "POST", headers: ["Content-Type" : "application/json; charset=utf-8"], data: data, completion: completion)
 	}
 
-	fileprivate func performPatchRequest(to uri: String, data: Data? = nil, completion: @escaping NetworkCompletion) {
+	fileprivate func performPatchRequest(to uri: String, data: Data, completion: @escaping NetworkCompletion) {
 		performRequest(to: uri, method: "PATCH", headers: ["Content-Type" : "application/json; charset=utf-8"], data: data, completion: completion)
 	}
 

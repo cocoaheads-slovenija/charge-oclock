@@ -34,17 +34,12 @@ class Client {
 		self.isDirty = false
 	}
 
-	func toData() -> Data? {
+	func toJSON() -> [String: Any] {
 		var json: [String: Any] = ["name": name]
 		if let id = id {
 			json["id"] = id
 		}
-		do {
-			return try JSONSerialization.data(withJSONObject: json, options: [])
-		} catch {
-			print("JSONSerialization error: \(error.localizedDescription)")
-			return nil
-		}
+		return json
 	}
 
 	func delete(completion: @escaping (Error?) -> Void) {
