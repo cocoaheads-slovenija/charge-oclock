@@ -14,22 +14,75 @@ protocol ClientSettable {
 
 class Client {
 
-	var id: Int = 0
-	var name: String = ""
+	var id: Int? = nil
+	var isDirty: Bool
 
-	init(id: Int, name: String) {
-		self.id = id
+	var name: String = "" {
+		didSet {
+			isDirty = true
+		}
+	}
+
+	init(name: String) {
 		self.name = name
+		self.isDirty = true
 	}
 
 	init(from json: [String: Any]) {
-		self.id = json["id"] as? Int ?? 0
+		self.id = json["id"] as? Int
 		self.name = json["name"] as? String ?? ""
+		self.isDirty = false
+	}
+
+	func toJSON() -> [String: Any] {
+		var json: [String: Any] = ["name": name]
+		if let id = id {
+			json["id"] = id
+		}
+		return json
 	}
 
 	func delete(completion: @escaping (Error?) -> Void) {
 		NetworkAPI.shared.delete(client: self) { data, error in
 			completion(error)
+		}
+	}
+
+	func save(completion: @escaping (Error?) -> Void) {
+		guard isDirty else {
+			return
+		}
+		if id == nil {
+			NetworkAPI.shared.create(client: self) { data, error in
+				guard error == nil else {
+					completion(error)
+					return
+				}
+				guard let data = data else {
+					completion(oClockError.invalidData)
+					return
+				}
+				do {
+					guard let client = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any] else {
+						completion(oClockError.invalidData)
+						return
+					}
+					self.id = client["id"] as? Int
+					self.isDirty = false
+					completion(nil)
+				} catch let error {
+					completion(error)
+				}
+			}
+		} else {
+			NetworkAPI.shared.update(client: self) { data, error in
+				guard error == nil else {
+					completion(error)
+					return
+				}
+				self.isDirty = false
+				completion(nil)
+			}
 		}
 	}
 }

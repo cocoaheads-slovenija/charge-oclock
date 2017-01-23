@@ -19,6 +19,26 @@ extension NetworkAPI {
 	func delete(client: Client, completion: @escaping NetworkCompletion) {
 		performDeleteRequest(to: "clients/\(client.id)", completion: completion)
 	}
+
+	func create(client: Client, completion: @escaping NetworkCompletion) {
+		do {
+			let data = try JSONSerialization.data(withJSONObject: client.toJSON(), options: [])
+			performPostRequest(to: "clients", data: data, completion: completion)
+		} catch {
+			print("JSONSerialization error: \(error.localizedDescription)")
+			completion(nil, error)
+		}
+	}
+
+	func update(client: Client, completion: @escaping NetworkCompletion) {
+		do {
+			let data = try JSONSerialization.data(withJSONObject: client.toJSON(), options: [])
+			performPatchRequest(to: "clients/\(client.id)", data: data, completion: completion)
+		} catch {
+			print("JSONSerialization error: \(error.localizedDescription)")
+			completion(nil, error)
+		}
+	}
 }
 
 class NetworkAPI {
@@ -39,6 +59,14 @@ class NetworkAPI {
 	private init() {
 	}
 
+	fileprivate func performPostRequest(to uri: String, data: Data, completion: @escaping NetworkCompletion) {
+		performRequest(to: uri, method: "POST", headers: ["Content-Type" : "application/json; charset=utf-8"], data: data, completion: completion)
+	}
+
+	fileprivate func performPatchRequest(to uri: String, data: Data, completion: @escaping NetworkCompletion) {
+		performRequest(to: uri, method: "PATCH", headers: ["Content-Type" : "application/json; charset=utf-8"], data: data, completion: completion)
+	}
+
 	fileprivate func performGetRequest(to uri: String, completion: @escaping NetworkCompletion) {
 		performRequest(to: uri, method: "GET", completion: completion)
 	}
@@ -47,13 +75,20 @@ class NetworkAPI {
 		performRequest(to: uri, method: "DELETE", completion: completion)
 	}
 
-	private func performRequest(to uri: String, method httpMethod: String, completion: @escaping NetworkCompletion) {
+	private func performRequest(to uri: String, method httpMethod: String, headers: [String : String]? = nil, data: Data? = nil, completion: @escaping NetworkCompletion) {
 		guard let url = constructURL(for: uri, completion: completion) else {
 			return
 		}
 
 		var urlRequest = URLRequest(url: url)
 		urlRequest.httpMethod = httpMethod
+		urlRequest.httpBody = data
+
+		if let header = headers {
+			for (key, value) in header {
+				urlRequest.addValue(value, forHTTPHeaderField: key)
+			}
+		}
 
 		URLSession.shared.dataTask(with: urlRequest) { data, response, error in
 			guard !self.isError(error, completion: completion) else {
