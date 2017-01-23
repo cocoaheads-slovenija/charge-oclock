@@ -25,7 +25,8 @@ extension NetworkAPI {
 			let data = try JSONSerialization.data(withJSONObject: client.toJSON(), options: [])
 			performPostRequest(to: "clients", data: data, completion: completion)
 		} catch {
-			completion(nil, oClockError.invalidData)
+			print("JSONSerialization error: \(error.localizedDescription)")
+			completion(nil, error)
 		}
 	}
 
@@ -34,7 +35,8 @@ extension NetworkAPI {
 			let data = try JSONSerialization.data(withJSONObject: client.toJSON(), options: [])
 			performPatchRequest(to: "clients/\(client.id)", data: data, completion: completion)
 		} catch {
-			completion(nil, oClockError.invalidData)
+			print("JSONSerialization error: \(error.localizedDescription)")
+			completion(nil, error)
 		}
 	}
 }
