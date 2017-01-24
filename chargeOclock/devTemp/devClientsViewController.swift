@@ -21,6 +21,7 @@ class devClientsViewController: UITableViewController {
 		tableViewDelegate.deleteClient = deleteClient
 		tableView.refreshControl = UIRefreshControl()
 		tableView.refreshControl?.addTarget(self, action: #selector(refresh(refreshControl:)), for: .valueChanged)
+
 	}
 
 	override func viewWillAppear(_ animated: Bool) {
