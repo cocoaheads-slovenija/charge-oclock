@@ -50,6 +50,31 @@ class devClientsViewController: UITableViewController {
 		}
 	}
 
+	@IBAction func plusTapped(sender: AnyObject) {
+		let alert = UIAlertController(title: "Add Client", message: "Please, enter client name", preferredStyle: .alert)
+		alert.addTextField { textField in
+			textField.placeholder = "Client name"
+		}
+		alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil ))
+		alert.addAction(UIAlertAction(title: "Create", style: .default) { _ in
+			guard let name = alert.textFields?.first?.text, !name.isEmpty else {
+				let nameEmptyAlert = UIAlertController(title: "Ups", message: "Looks like you forgot to enter the username. Please, try again.", preferredStyle: .alert)
+				nameEmptyAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+				self.present(nameEmptyAlert, animated: true, completion: nil)
+				return
+			}
+			let client = Client(name: name)
+			client.save() { error in
+				guard error == nil else {
+					print("\(error?.localizedDescription)")
+					return
+				}
+				self.refresh(refreshControl: self.tableView.refreshControl ?? UIRefreshControl() )
+			}
+		})
+		self.present(alert, animated: true, completion: nil)
+	}
+
 	func deleteClient(at indexPath: IndexPath) {
 		dataSource.clients[indexPath.row].delete { error in
 
@@ -68,4 +93,5 @@ class devClientsViewController: UITableViewController {
 			}
 		}
 	}
+
 }
