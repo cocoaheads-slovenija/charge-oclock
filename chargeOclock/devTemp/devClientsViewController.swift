@@ -54,7 +54,7 @@ class devClientsViewController: UITableViewController {
 
 			if let error = error {
 				let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
-				alert.addAction(UIAlertAction(title: "Ok", style: .destructive, handler: nil))
+				alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
 				DispatchQueue.main.async {
 					self.present(alert, animated: true, completion: nil)
 				}
@@ -67,5 +67,4 @@ class devClientsViewController: UITableViewController {
 			}
 		}
 	}
-	
 }
