@@ -11,12 +11,14 @@ import UIKit
 class devClientsViewController: UITableViewController {
 
 	private var dataSource = ClientsDataSource()
+	private var tableViewDelegate = ClientsTableViewDelegate()
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
 		tableView.dataSource = dataSource
-
+		tableView.delegate = tableViewDelegate
+		tableViewDelegate.deleteClient = deleteClient
 		tableView.refreshControl = UIRefreshControl()
 		tableView.refreshControl?.addTarget(self, action: #selector(refresh(refreshControl:)), for: .valueChanged)
 
@@ -71,6 +73,25 @@ class devClientsViewController: UITableViewController {
 			}
 		})
 		self.present(alert, animated: true, completion: nil)
+	}
+
+	func deleteClient(at indexPath: IndexPath) {
+		dataSource.clients[indexPath.row].delete { error in
+
+			if let error = error {
+				let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+				alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+				DispatchQueue.main.async {
+					self.present(alert, animated: true, completion: nil)
+				}
+				return
+			}
+
+			self.dataSource.removeClient(at: indexPath.row)
+			DispatchQueue.main.async {
+				self.tableView.reloadData()
+			}
+		}
 	}
 
 }

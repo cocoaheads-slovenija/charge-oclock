@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		122D24561E2EDEED00FE41D1 /* ClientsTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122D24551E2EDEED00FE41D1 /* ClientsTableViewDelegate.swift */; };
 		51F2144A1E2280D50036E943 /* chargeOclockTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F214491E2280D50036E943 /* chargeOclockTests.swift */; };
 		51F214551E2280D50036E943 /* chargeOclockUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F214541E2280D50036E943 /* chargeOclockUITests.swift */; };
 		51F214681E2282000036E943 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 51F214631E2282000036E943 /* Assets.xcassets */; };
@@ -41,6 +42,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		122D24551E2EDEED00FE41D1 /* ClientsTableViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ClientsTableViewDelegate.swift; path = ../Source/Controllers/ClientsTableViewDelegate.swift; sourceTree = "<group>"; };
 		51F214311E2280D50036E943 /* chargeOclock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = chargeOclock.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		51F214401E2280D50036E943 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		51F214451E2280D50036E943 /* chargeOclockTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = chargeOclockTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -214,6 +216,7 @@
 			isa = PBXGroup;
 			children = (
 				51F214891E2284240036E943 /* devTempUI.storyboard */,
+				122D24551E2EDEED00FE41D1 /* ClientsTableViewDelegate.swift */,
 				51F2148B1E2285800036E943 /* devClientsViewController.swift */,
 			);
 			path = devTemp;
@@ -356,6 +359,7 @@
 			files = (
 				51F214821E22834C0036E943 /* ViewController.swift in Sources */,
 				51F214901E2286BB0036E943 /* Errors.swift in Sources */,
+				122D24561E2EDEED00FE41D1 /* ClientsTableViewDelegate.swift in Sources */,
 				51F214921E2287860036E943 /* Client.swift in Sources */,
 				51F214801E22834C0036E943 /* AppDelegate.swift in Sources */,
 				51F2148C1E2285800036E943 /* devClientsViewController.swift in Sources */,
