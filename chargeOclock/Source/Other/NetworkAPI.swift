@@ -17,7 +17,11 @@ extension NetworkAPI {
 	}
 
 	func delete(client: Client, completion: @escaping NetworkCompletion) {
-		performDeleteRequest(to: "clients/\(client.id)", completion: completion)
+		guard let id = client.id else {
+			completion(nil, oClockError.internalError)
+			return
+		}
+		performDeleteRequest(to: "clients/\(id)", completion: completion)
 	}
 
 	func create(client: Client, completion: @escaping NetworkCompletion) {
