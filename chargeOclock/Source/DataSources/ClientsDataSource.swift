@@ -11,6 +11,7 @@ import UIKit
 class ClientsDataSource: NSObject, UITableViewDataSource {
 
 	private(set) var clients: [Client]
+	var updateClient: ((Client) -> Void)?
 	let reuseIdentifier: String
 
 	init(with clients: [Client] = [], reuseIdentifier: String = "devClientCell") {
@@ -27,10 +28,9 @@ class ClientsDataSource: NSObject, UITableViewDataSource {
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
-		if var clientCell = cell as? ClientSettable {
-			clientCell.client = clients[indexPath.row]
-		}
+		let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! ClientTableViewCell
+		cell.client = clients[indexPath.row]
+		cell.updateClient = updateClient
 		return cell
 	}
 

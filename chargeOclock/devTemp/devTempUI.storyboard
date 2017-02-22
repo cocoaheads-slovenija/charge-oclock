@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -55,29 +56,39 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="devClientCell" textLabel="jfa-df-uAM" detailTextLabel="LT7-Ub-Lvl" style="IBUITableViewCellStyleValue1" id="r1J-vL-Oq9" customClass="ClientTableViewCell" customModule="chargeOclock" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="devClientCell" id="r1J-vL-Oq9" customClass="ClientTableViewCell" customModule="chargeOclock" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="r1J-vL-Oq9" id="icZ-dV-uqm">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="jfa-df-uAM">
-                                            <rect key="frame" x="15" y="12" width="33.5" height="20.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aK0-Jd-fDN">
+                                            <rect key="frame" x="8" y="0.0" width="315" height="43.5"/>
                                             <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="LT7-Ub-Lvl">
-                                            <rect key="frame" x="316" y="12" width="44" height="20.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits"/>
+                                        </textField>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Detail" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NyZ-ri-1MA">
+                                            <rect key="frame" x="323" y="11" width="44" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="aK0-Jd-fDN" secondAttribute="bottom" id="QqI-wi-c7V"/>
+                                        <constraint firstItem="aK0-Jd-fDN" firstAttribute="leading" secondItem="icZ-dV-uqm" secondAttribute="leading" constant="8" id="WIZ-KE-FEG"/>
+                                        <constraint firstItem="NyZ-ri-1MA" firstAttribute="centerY" secondItem="icZ-dV-uqm" secondAttribute="centerY" id="XVL-9z-itY"/>
+                                        <constraint firstItem="aK0-Jd-fDN" firstAttribute="top" secondItem="icZ-dV-uqm" secondAttribute="top" id="eLv-f2-ffn"/>
+                                        <constraint firstItem="NyZ-ri-1MA" firstAttribute="trailing" secondItem="icZ-dV-uqm" secondAttribute="trailingMargin" id="iYq-Hv-Czq"/>
+                                        <constraint firstItem="NyZ-ri-1MA" firstAttribute="leading" secondItem="aK0-Jd-fDN" secondAttribute="trailing" id="xQZ-dG-kQM"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="detailLabel" destination="NyZ-ri-1MA" id="tu9-h7-UBQ"/>
+                                    <outlet property="nameTextField" destination="aK0-Jd-fDN" id="T96-On-PH7"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -96,7 +107,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FAK-hW-dfY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="898" y="195"/>
+            <point key="canvasLocation" x="896.79999999999995" y="194.75262368815595"/>
         </scene>
     </scenes>
 </document>

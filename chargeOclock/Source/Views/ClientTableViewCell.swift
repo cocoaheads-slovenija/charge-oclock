@@ -10,16 +10,32 @@ import UIKit
 
 class ClientTableViewCell: UITableViewCell, ClientSettable {
 
+	@IBOutlet private var nameTextField: UITextField!
+	@IBOutlet private var detailLabel: UILabel!
+
+	private var clientTextFieldDelegate = ClientTextFieldDelegate()
+
+	var updateClient: ((Client) -> Void)?
+
 	var client: Client? = nil {
 		didSet {
-			textLabel?.text = client?.name
-			detailTextLabel?.text = "\(client?.id ?? 0)"
+			nameTextField.text = client?.name
+			detailLabel.text = "\(client?.id ?? 0)"
+			nameTextField.delegate = clientTextFieldDelegate
+			clientTextFieldDelegate.endEditingWithText = handleNewClientName
 		}
 	}
 
 	override func prepareForReuse() {
-		textLabel?.text = ""
-		detailTextLabel?.text = ""
+		nameTextField.text = ""
+		detailLabel.text = ""
 	}
 
+	func handleNewClientName(name: String) {
+		client?.name = name
+		guard let client = client else {
+			return
+		}
+		updateClient?(client)
+	}
 }

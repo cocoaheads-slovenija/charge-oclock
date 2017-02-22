@@ -22,6 +22,7 @@
 		51F214921E2287860036E943 /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F214911E2287860036E943 /* Client.swift */; };
 		51F214941E2288DA0036E943 /* ClientsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F214931E2288DA0036E943 /* ClientsDataSource.swift */; };
 		51F214961E228D1A0036E943 /* ClientTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F214951E228D1A0036E943 /* ClientTableViewCell.swift */; };
+		77B6D5911E5B862F0024D041 /* ClientTextFieldDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77B6D5901E5B862F0024D041 /* ClientTextFieldDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +64,7 @@
 		51F214911E2287860036E943 /* Client.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
 		51F214931E2288DA0036E943 /* ClientsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClientsDataSource.swift; sourceTree = "<group>"; };
 		51F214951E228D1A0036E943 /* ClientTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClientTableViewCell.swift; sourceTree = "<group>"; };
+		77B6D5901E5B862F0024D041 /* ClientTextFieldDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClientTextFieldDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -217,6 +219,7 @@
 			children = (
 				51F214891E2284240036E943 /* devTempUI.storyboard */,
 				122D24551E2EDEED00FE41D1 /* ClientsTableViewDelegate.swift */,
+				77B6D5901E5B862F0024D041 /* ClientTextFieldDelegate.swift */,
 				51F2148B1E2285800036E943 /* devClientsViewController.swift */,
 			);
 			path = devTemp;
@@ -364,6 +367,7 @@
 				51F214801E22834C0036E943 /* AppDelegate.swift in Sources */,
 				51F2148C1E2285800036E943 /* devClientsViewController.swift in Sources */,
 				51F214941E2288DA0036E943 /* ClientsDataSource.swift in Sources */,
+				77B6D5911E5B862F0024D041 /* ClientTextFieldDelegate.swift in Sources */,
 				51F214961E228D1A0036E943 /* ClientTableViewCell.swift in Sources */,
 				51F2148E1E2286150036E943 /* NetworkAPI.swift in Sources */,
 			);
