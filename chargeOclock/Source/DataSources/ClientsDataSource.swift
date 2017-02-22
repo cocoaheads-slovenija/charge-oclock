@@ -19,6 +19,10 @@ class ClientsDataSource: NSObject, UITableViewDataSource {
 		self.reuseIdentifier = reuseIdentifier
 	}
 
+	func reload(_ clients: [Client]) {
+		self.clients = clients
+	}
+
 	func numberOfSections(in tableView: UITableView) -> Int {
 		return clients.count > 0 ? 1 : 0
 	}

@@ -10,13 +10,14 @@ import UIKit
 
 class devClientsViewController: UITableViewController {
 
-	private var dataSource: ClientsDataSource?
+	private var dataSource = ClientsDataSource()
 	private var tableViewDelegate = ClientsTableViewDelegate()
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
 		tableView.dataSource = dataSource
+		dataSource.updateClient = updateClient
 		tableView.delegate = tableViewDelegate
 		tableViewDelegate.deleteClient = deleteClient
 		tableView.refreshControl = UIRefreshControl()
@@ -40,14 +41,12 @@ class devClientsViewController: UITableViewController {
 				print("💥 \(error)")
 			}
 
-			self.dataSource = ClientsDataSource(with: clients)
-			self.dataSource?.updateClient = self.updateClient
+			self.dataSource.reload(clients)
 			self.tableView.dataSource = self.dataSource
 			DispatchQueue.main.async {
 				self.tableView.reloadData()
+				refreshControl.endRefreshing()
 			}
-
-			refreshControl.endRefreshing()
 		}
 	}
 
@@ -77,7 +76,7 @@ class devClientsViewController: UITableViewController {
 	}
 
 	func deleteClient(at indexPath: IndexPath) {
-		dataSource?.clients[indexPath.row].delete { error in
+		dataSource.clients[indexPath.row].delete { error in
 
 			if let error = error {
 				let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
@@ -88,7 +87,7 @@ class devClientsViewController: UITableViewController {
 				return
 			}
 
-			self.dataSource?.removeClient(at: indexPath.row)
+			self.dataSource.removeClient(at: indexPath.row)
 			DispatchQueue.main.async {
 				self.tableView.reloadData()
 			}
