@@ -10,17 +10,12 @@ import UIKit
 
 class ClientsDataSource: NSObject, UITableViewDataSource {
 
-	private(set) var clients: [Client]
-	var updateClient: ((Client) -> Void)?
+	var clients: [Client]
 	let reuseIdentifier: String
 
 	init(with clients: [Client] = [], reuseIdentifier: String = "devClientCell") {
 		self.clients = clients
 		self.reuseIdentifier = reuseIdentifier
-	}
-
-	func reload(_ clients: [Client]) {
-		self.clients = clients
 	}
 
 	func numberOfSections(in tableView: UITableView) -> Int {
@@ -32,9 +27,10 @@ class ClientsDataSource: NSObject, UITableViewDataSource {
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! ClientTableViewCell
-		cell.client = clients[indexPath.row]
-		cell.updateClient = updateClient
+		let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
+		if var clientCell = cell as? ClientSettable {
+			clientCell.client = clients[indexPath.row]
+		}
 		return cell
 	}
 

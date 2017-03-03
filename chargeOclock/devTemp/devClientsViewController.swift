@@ -17,7 +17,6 @@ class devClientsViewController: UITableViewController {
 		super.viewDidLoad()
 
 		tableView.dataSource = dataSource
-		dataSource.updateClient = updateClient
 		tableView.delegate = tableViewDelegate
 		tableViewDelegate.deleteClient = deleteClient
 		tableView.refreshControl = UIRefreshControl()
@@ -40,8 +39,7 @@ class devClientsViewController: UITableViewController {
 			if let error = error {
 				print("💥 \(error)")
 			}
-
-			self.dataSource.reload(clients)
+			self.dataSource.clients = clients
 			self.tableView.dataSource = self.dataSource
 			DispatchQueue.main.async {
 				self.tableView.reloadData()
@@ -91,20 +89,6 @@ class devClientsViewController: UITableViewController {
 			DispatchQueue.main.async {
 				self.tableView.reloadData()
 			}
-		}
-	}
-
-	func updateClient(client: Client) {
-		client.save() { error in
-			if let error = error {
-				let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
-				alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-				DispatchQueue.main.async {
-					self.present(alert, animated: true, completion: nil)
-				}
-				return
-			}
-			self.refresh(refreshControl: self.tableView.refreshControl ?? UIRefreshControl())
 		}
 	}
 }

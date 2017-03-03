@@ -13,16 +13,11 @@ class ClientTableViewCell: UITableViewCell, ClientSettable {
 	@IBOutlet private var nameTextField: UITextField!
 	@IBOutlet private var detailLabel: UILabel!
 
-	private var clientTextFieldDelegate = ClientTextFieldDelegate()
-
-	var updateClient: ((Client) -> Void)?
-
 	var client: Client? = nil {
 		didSet {
 			nameTextField.text = client?.name
 			detailLabel.text = "\(client?.id ?? 0)"
-			nameTextField.delegate = clientTextFieldDelegate
-			clientTextFieldDelegate.endEditingWithText = handleNewClientName
+			nameTextField.delegate = self
 		}
 	}
 
@@ -30,12 +25,39 @@ class ClientTableViewCell: UITableViewCell, ClientSettable {
 		nameTextField.text = ""
 		detailLabel.text = ""
 	}
+}
 
-	func handleNewClientName(name: String) {
-		client?.name = name
-		guard let client = client else {
+extension ClientTableViewCell: UITextFieldDelegate {
+
+	func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+		textField.resignFirstResponder()
+		return true
+	}
+
+	func textFieldDidEndEditing(_ textField: UITextField) {
+		guard let text = textField.text, let client = client else {
 			return
 		}
-		updateClient?(client)
+		client.name = text
+		client.save { error in
+			guard error == nil else {
+				let alert = UIAlertController(title: "Save error", message: "Client saving failed, error \(error?.localizedDescription)", preferredStyle: .alert)
+				alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil ))
+
+				var parentViewController: UIViewController? {
+					var parentResponder: UIResponder? = self
+					while parentResponder != nil {
+						parentResponder = parentResponder!.next
+						if parentResponder is UIViewController {
+							return parentResponder as! UIViewController!
+						}
+					}
+					return nil
+				}
+
+				parentViewController?.present(alert, animated: true, completion: nil)
+				return
+			}
+		}
 	}
 }
