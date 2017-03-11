@@ -28,8 +28,8 @@ class ClientsDataSource: NSObject, UITableViewDataSource {
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
-		if var clientCell = cell as? ClientSettable {
-			clientCell.client = clients[indexPath.row]
+		if var cell = cell as? ClientSettable {
+			cell.client = clients[indexPath.row]
 		}
 		return cell
 	}
