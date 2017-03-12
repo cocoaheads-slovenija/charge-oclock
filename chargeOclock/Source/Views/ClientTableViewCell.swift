@@ -41,7 +41,7 @@ extension ClientTableViewCell: UITextFieldDelegate {
 		client.name = text
 		client.save { error in
 			guard error == nil else {
-				let alert = UIAlertController(title: "Save error", message: "Client saving failed, with error:\n\(error)", preferredStyle: .alert)
+				let alert = UIAlertController(title: "Save error", message: "Client saving failed, with error:\n\(error?.localizedDescription)", preferredStyle: .alert)
 				alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil ))
 
 				var parentViewController: UIViewController? {

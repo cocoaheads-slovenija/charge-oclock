@@ -16,4 +16,24 @@ enum oClockError: Error {
 	case unauthorized
 	case forbidden
 	case notFound
+
+	var localizedDescription: String {
+		switch self {
+		case .unknown:
+			return "Unknown error occoured."
+		case .internalError:
+			return "Internal error occoured."
+		case .serverError(code: let code):
+			return "Server error occoured, code \(code)"
+		case .invalidData:
+			return "Invalid data error occoured."
+		case .unauthorized:
+			return "Unathorized error occoured."
+		case .forbidden:
+			return "Forbiden error occoured."
+		case .notFound:
+			return "Not found error occoured."
+
+		}
+	}
 }
