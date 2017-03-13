@@ -17,7 +17,11 @@ extension NetworkAPI {
 	}
 
 	func delete(client: Client, completion: @escaping NetworkCompletion) {
-		performDeleteRequest(to: "clients/\(client.id)", completion: completion)
+		guard let id = client.id else {
+			completion(nil, oClockError.internalError)
+			return
+		}
+		performDeleteRequest(to: "clients/\(id)", completion: completion)
 	}
 
 	func create(client: Client, completion: @escaping NetworkCompletion) {
@@ -31,9 +35,13 @@ extension NetworkAPI {
 	}
 
 	func update(client: Client, completion: @escaping NetworkCompletion) {
+		guard let id = client.id else {
+			completion(nil, oClockError.internalError)
+			return
+		}
 		do {
 			let data = try JSONSerialization.data(withJSONObject: client.toJSON(), options: [])
-			performPatchRequest(to: "clients/\(client.id)", data: data, completion: completion)
+			performPatchRequest(to: "clients/\(id)", data: data, completion: completion)
 		} catch {
 			print("JSONSerialization error: \(error.localizedDescription)")
 			completion(nil, error)

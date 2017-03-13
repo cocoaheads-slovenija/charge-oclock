@@ -19,7 +19,7 @@ class Client {
 
 	var name: String = "" {
 		didSet {
-			isDirty = true
+			isDirty = oldValue != name
 		}
 	}
 

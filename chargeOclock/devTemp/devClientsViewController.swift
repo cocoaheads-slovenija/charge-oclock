@@ -39,14 +39,12 @@ class devClientsViewController: UITableViewController {
 			if let error = error {
 				print("💥 \(error)")
 			}
-
-			self.dataSource = ClientsDataSource(with: clients)
+			self.dataSource.clients = clients
 			self.tableView.dataSource = self.dataSource
 			DispatchQueue.main.async {
 				self.tableView.reloadData()
+				refreshControl.endRefreshing()
 			}
-
-			refreshControl.endRefreshing()
 		}
 	}
 
@@ -93,5 +91,4 @@ class devClientsViewController: UITableViewController {
 			}
 		}
 	}
-
 }
